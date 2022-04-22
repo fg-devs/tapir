@@ -40,7 +40,9 @@ private[sttp] class EndpointToSttpClient[R](clientOptions: SttpClientOptions, ws
 
       val isWebSocket = bodyIsWebSocket(e.output)
 
-      def isSuccess(meta: ResponseMetadata) = if (isWebSocket) meta.code == StatusCode.SwitchingProtocols else meta.isSuccess
+      def isSuccess(meta: ResponseMetadata) =
+        if (isWebSocket) meta.code == StatusCode.SwitchingProtocols else meta.isSuccess // doesn't work
+//      def isSuccess(meta: ResponseMetadata) = if (isWebSocket) meta.code == StatusCode.SwitchingProtocols else meta.isSuccess | meta.isRedirect // works
 
       val responseAs = fromMetadata(
         responseAsFromOutputs(e.errorOutput, isWebSocket = false),

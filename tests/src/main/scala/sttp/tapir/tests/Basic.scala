@@ -12,6 +12,12 @@ import java.io.InputStream
 import java.nio.ByteBuffer
 
 object Basic {
+
+  val showcase: PublicEndpoint[Unit, String, String, Any] = endpoint.get
+    .in("showcase")
+    .out(statusCode(StatusCode.SeeOther).and(header[String](HeaderNames.Location)))
+    .errorOut(statusCode(StatusCode.InternalServerError).and(stringBody))
+
   val in_query_out_string: PublicEndpoint[String, Unit, String, Any] = endpoint.in(query[String]("fruit")).out(stringBody)
 
   val in_query_out_infallible_string: PublicEndpoint[String, Nothing, String, Any] =

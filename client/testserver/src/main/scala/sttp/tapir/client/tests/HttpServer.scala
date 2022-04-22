@@ -16,7 +16,7 @@ import org.http4s.{multipart, _}
 import org.typelevel.ci.CIString
 import scodec.bits.ByteVector
 import sttp.tapir.client.tests.HttpServer._
-
+import org.typelevel.ci._
 import scala.concurrent.ExecutionContext
 
 object HttpServer {
@@ -44,6 +44,8 @@ class HttpServer(port: Port) {
   private object statusOutParam extends QueryParamDecoderMatcher[Int]("statusOut")
 
   private def service(wsb: WebSocketBuilder2[IO]) = HttpRoutes.of[IO] {
+    case GET -> Root / "showcase" =>
+      IO.pure(Response(status = Status.SeeOther, headers = Headers(Header.Raw(ci"Location", "http://dummy"))))
     case GET -> Root :? fruitParam(f) +& amountOptParam(amount) =>
       if (f == "papaya") {
         Accepted("29")

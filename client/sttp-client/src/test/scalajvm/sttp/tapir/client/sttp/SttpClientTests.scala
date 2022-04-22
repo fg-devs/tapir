@@ -27,6 +27,7 @@ abstract class SttpClientTests[R >: WebSockets with Fs2Streams[IO]] extends Clie
       .toSecureRequestThrowDecodeFailures(e, Some(uri"$scheme://localhost:$port"))
       .apply(securityArgs)
       .apply(args)
+      .followRedirects(false)
       .send(backend)
       .map(_.body)
   }
